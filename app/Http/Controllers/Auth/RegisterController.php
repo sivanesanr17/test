@@ -61,7 +61,6 @@ class RegisterController extends Controller
                     ->mixedCase()
                     ->numbers()
                     ->symbols()
-                    ->uncompromised(),
             ],
         ]);
     }
