@@ -58,14 +58,25 @@
                                                     class="btn btn-info btn-sm">Show</a>
                                                 <a href="{{ route('users.edit', $user) }}"
                                                     class="btn btn-warning btn-sm">Edit</a>
+
+                                                @can('assign roles')
+                                                    <a href="{{ route('users.roles.edit', $user) }}"
+                                                        class="btn btn-secondary btn-sm">
+                                                        Assign Roles
+                                                    </a>
+                                                @endcan
+
                                                 <form action="{{ route('users.destroy', $user) }}" method="POST"
                                                     class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Are you sure?')">Delete</button>
+                                                        onclick="return confirm('Are you sure?')">
+                                                        Delete
+                                                    </button>
                                                 </form>
                                             </td>
+
                                         </tr>
                                     @empty
                                         <tr>

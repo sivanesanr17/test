@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+
 class UserController extends Controller
 {
     /**
@@ -201,5 +202,32 @@ class UserController extends Controller
             return redirect()->back()
                 ->with('error', 'Failed to delete user. Please try again.');
         }
+    }
+
+    /**
+     * Show the form for assigning one or more roles to a user.
+     */
+    public function editRoles(User $user): View
+    {
+
+        $roles = Role::all();
+
+        return view('users.assign-roles', compact('user', 'roles'));
+    }
+
+    /**
+     * Update the roles assigned to a specific user.
+     */
+    public function updateRoles(Request $request, User $user): RedirectResponse
+    {
+        $request->validate([
+            'roles' => 'array'
+        ]);
+
+        $user->syncRoles($request->roles ?? []);
+
+        return redirect()
+            ->route('users.index')
+            ->with('success', 'Roles assigned successfully');
     }
 }

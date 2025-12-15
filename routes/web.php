@@ -39,7 +39,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{bus}', [BusController::class, 'destroy'])->name('destroy');
         });
 
-    // User Management
     Route::middleware('can:manage users')
         ->prefix('users')
         ->name('users.')
@@ -48,11 +47,21 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::get('/create', [UserController::class, 'create'])->name('create');
             Route::post('/', [UserController::class, 'store'])->name('store');
+
+            Route::get('/{user}/assign-roles', [UserController::class, 'editRoles'])
+                ->name('roles.edit')
+                ->middleware('can:assign roles');
+
+            Route::put('/{user}/assign-roles', [UserController::class, 'updateRoles'])
+                ->name('roles.update')
+                ->middleware('can:assign roles');
+
             Route::get('/{user}', [UserController::class, 'show'])->name('show');
             Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
             Route::put('/{user}', [UserController::class, 'update'])->name('update');
             Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
         });
+
 
     // Role Management 
     Route::middleware('can:manage roles')
