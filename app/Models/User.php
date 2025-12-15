@@ -8,11 +8,12 @@ use Illuminate\Notifications\Notifiable;
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\Models\Booking;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasRoles,HasFactory, Notifiable;
+    use HasRoles, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,13 +46,23 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    public function sendPasswordResetNotification($token)
+    /**
+     * Send the password reset notification email to the user.
+     */
+    public function sendPasswordResetNotification($token): void
     {
         Mail::to($this->email)->send(new ResetPasswordMail($this, $token));
+    }
+
+    /**
+     * Get all bookings made by the user.
+     */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
     }
 }

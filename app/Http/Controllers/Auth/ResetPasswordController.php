@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
     /**
      * Overrided validation rules
      */
-    protected function rules()
+    protected function rules(): array
     {
         return [
             'token' => 'required',
